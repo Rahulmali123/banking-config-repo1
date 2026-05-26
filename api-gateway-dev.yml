@@ -45,6 +45,14 @@ spring:
               args:
                 name: transactionB
 
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+            - Path=/oauth2/**
+          filters:
+            - StripPrefix=1
+
 eureka:
   client:
     service-url:
@@ -54,4 +62,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, info, metrics
+        include: health,info,metrics
