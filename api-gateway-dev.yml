@@ -1,5 +1,5 @@
 server:
-  port: 8080   # optional (can also be controlled locally)
+  port: 8080
 
 spring:
   application:
@@ -30,6 +30,9 @@ spring:
 
       routes:
 
+        # =========================
+        # ACCOUNT SERVICE
+        # =========================
         - id: account-service
           uri: lb://ACCOUNT-SERVICE
           predicates:
@@ -37,6 +40,9 @@ spring:
           filters:
             - StripPrefix=1
 
+        # =========================
+        # TRANSACTION SERVICE
+        # =========================
         - id: transaction-service
           uri: lb://TRANSACTION-SERVICE
           predicates:
@@ -47,10 +53,23 @@ spring:
               args:
                 name: transactionCB
 
+        # =========================
+        # AUTH SERVICE
+        # =========================
         - id: auth-service
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/auth/**,/oauth2/**,/users/register/**
+          filters:
+            - StripPrefix=1
+
+        # =========================
+        # CUSTOMER SERVICE
+        # =========================
+        - id: customer-service
+          uri: lb://CUSTOMER-SERVICE
+          predicates:
+            - Path=/api/customers/**,/api/kyc/**
           filters:
             - StripPrefix=1
 
