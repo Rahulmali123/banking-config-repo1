@@ -12,7 +12,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000/auth-service
+          issuer-uri: http://localhost:9000   # ✅ FIXED (NO /auth-service)
 
   data:
     redis:
@@ -24,6 +24,7 @@ spring:
       default-filters:
         - name: RequestRateLimiter
           args:
+            key-resolver: "#{@userKeyResolver}"
             redis-rate-limiter.replenishRate: 5
             redis-rate-limiter.burstCapacity: 10
 
@@ -43,13 +44,12 @@ spring:
             - StripPrefix=1
             - name: CircuitBreaker
               args:
-                name: transactionB
+                name: transactionCB
 
         - id: auth-service
           uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/auth/**
-            - Path=/oauth2/**
+            - Path=/auth/**,/oauth2/**,/users/register/**
           filters:
             - StripPrefix=1
 
