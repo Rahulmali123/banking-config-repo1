@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8080   # optional (can also be controlled locally)
 
 spring:
   application:
@@ -12,7 +12,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000   # ✅ FIXED (NO /auth-service)
+          issuer-uri: http://localhost:9000
 
   data:
     redis:
@@ -29,6 +29,7 @@ spring:
             redis-rate-limiter.burstCapacity: 10
 
       routes:
+
         - id: account-service
           uri: lb://ACCOUNT-SERVICE
           predicates:
